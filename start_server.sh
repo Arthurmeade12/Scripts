@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 set -B
+### Settings
+TIMEOUT=60
+UPDATE_PURPUR=true
+BACKUP=true
+UNIVERSE=$MC_DIR/universe
+BACKUP=$MC_DIR/backup
+MC_DIR=~/Minecraft
+### Do not modify past here
+export TIMEOUT
 RED=$(tput setaf 1)
 BLUE=$(tput setaf 20)
 BOLD=$(tput bold)
@@ -8,10 +17,9 @@ MAGENTA=$(tput setaf 5)
 RESET=$(tput sgr0)
 YELLOW=$(tput setaf 3)
 GREEN=$(tput setaf 2)
-MC_DIR=~/Minecraft
 SERVERS=()
-TIMEOUT=60
-export TIMEOUT
+AIKAR='-XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:InitiatingHeapOccupancyPercent=15 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true'
+ZGC=
 out(){
 	for X in "$@"; do
 		echo -en "${BLUE}${BOLD}==>${RESET} ${WHITE}${X} "
@@ -71,6 +79,21 @@ then
 fi
 pushd $MC_DIR
 pushd ./bin
-backup ${SERVERS[*]}
-update_purpur
+if [[ $BACKUP == 'true' ]]
+then
+	MC_DIR=~/Minecraft
+
+	cd $UNIVERSE
+	ARGS=-dbrST
+	for SERVER in $@
+	do
+	  cd $SERVER
+	  if [[ -f "$OLD_ZIP" ]]
+	  then
+	    ARGS+=
+	  fi
+	  zip $ARGS $(date "+%Y-%d-%m %H:%M")
+	done
 popd
+tmux new -ds SERVERS
+tmux renamew -t
