@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-BROWSER='Brave Broswser Beta'
+BROWSER='Brave Browser Beta'
 case "$#" in
 0)
   BOOKMARKS=~/Desktop/Bookmarks
@@ -8,7 +8,8 @@ case "$#" in
   BOOKMARKS="$1"
   ;;
 esac
-for x in {$(find "$BOOKMARKS" -maxdepth 1)}
+LIST=$(find "$BOOKMARKS" -maxdepth 1 |tr '\n' ' ')
+for x in "$LIST"
 do
   open $x -a "$BROWSER"
 done

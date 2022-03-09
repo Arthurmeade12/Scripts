@@ -10,7 +10,7 @@ MC_DIR='~/Minecraft'
 PROXY='false'
 DATE='oops'
 HOST='0.0.0.0'
-VELOCITY='nope'
+VELOCITY='false'
 case "$PROXY" in
 true)
 	ONLINE=false
@@ -114,8 +114,6 @@ then
 	for SERVER in ${SERVERS[*]}
 	do
 		pushd $SERVER
-		#OLDZIPS=$(find . -type f | head -n 10 )
-		#diff -q $OLDZIPS $(find . -type f )
 		tar -czf ./$SERVER/"$TIME".tar.gz ../universe/$SERVER
 		popd
 	done
@@ -134,23 +132,17 @@ fi
 line 134
 for WINDOW in ${SERVERS[*]}
 do
-  if tmux findw -t "$WINDOW" 2>/dev/null
-  then
-		tmux send -t "$WINDOW" 'stop
-		'
-		line 138
-		until ! tmux findw -t "$WINDOW" 2>/dev/null
+	if tmux findw "$WINDOW"
+	then
+		tmux send -t "$WINDOW" 'stop'
+		until ! tmux findw "$WINDOW"
 		do
 			sleep 3
 		done
-  fi
-	tmux neww -t SERVERS -c "$MC_DIR" -n "$WINDOW"
-	line 145
-  tmux send -t "$WINDOW" "java -version && echo $WINDOW && read STOP && exit
+	else
+		tmux neww "$WINDOW"
+	fi
+  tmux send -t "$WINDOW" "java -version && echo $WINDOW && read -n 4 STOP && exit
 	"
-	#if tmux findw -t 'bash'
-	#then
-	#	tmux killw -t 'bash'
-	#fi
 done
 echo 'All done!'
