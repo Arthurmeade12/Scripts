@@ -1,2 +1,2 @@
 # Scripts
-This Repo is just a collection of some self-written scripts written in ```bash```.
+This Repo is a mirror of my local self-written scripts in ```bash```.
