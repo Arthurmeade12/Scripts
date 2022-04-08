@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-BROWSER='Brave Browser Beta'
+BROWSER='Brave Browser'
 case "$#" in
 0)
   BOOKMARKS=~/Desktop/Bookmarks

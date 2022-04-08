@@ -2,11 +2,10 @@
 set -euBo pipefail
 ### Settings
 TIMEOUT='60'
-MC_DIR=~/Minecraft
+MC_DIR="~/Minecraft"
 UPDATE_PURPUR='false'
 BACKUP='false'
 UNIVERSE="$MC_DIR/universe"
-MC_DIR='~/Minecraft'
 PROXY='false'
 DATE='oops'
 HOST='0.0.0.0'
@@ -78,7 +77,7 @@ abort(){
 }
 if [[ $# = 0 ]]
 then
-  read -p "$GREEN$BOLD==>$RESET $WHITE Which server(s) do you want to start? (lobby|survival|ctl|fabric|velocity) " -a SERVERS
+  read -rp "$GREEN$BOLD==>$RESET $WHITE Which server(s) do you want to start? (lobby|survival|ctl|fabric|velocity) " -a SERVERS
 	if [[ $? -eq 142 ]]
 	then
 		abort "No activity for 1 minute."
@@ -96,7 +95,7 @@ do
 			VELOCITY=true
 			;;
 		*)
-			warn "$1 is not a valid server and will be ignored."
+			echo "WARNING: $1 is not a valid server and will be ignored."
 			;;
 	esac
 	shift
@@ -113,36 +112,32 @@ then
 	pushd ./backup
 	for SERVER in ${SERVERS[*]}
 	do
-		pushd $SERVER
-		tar -czf ./$SERVER/"$TIME".tar.gz ../universe/$SERVER
+		pushd "$SERVER"
+		tar -czf ./"$SERVER"/"$TIME".tar.gz ../universe/"$SERVER"
 		popd
 	done
 	popd
 fi
-## Starting of server
-line(){
-	echo $1
-}
+## tmux
 set -x
 if ! tmux has -t 'SERVERS' 2>/dev/null
 then
-	line 128
-  tmux new -ds SERVERS -n "${SERVERS[0]}" -c "$MC_DIR"
+  tmux new -ds SERVERS -c "$MC_DIR"
+	sleep 2
+	tmux select-window -t 'SERVERS:0'
+	for C in {lobby,survival,fabric,ctl,velocity}
+	do
+		tmux neww -dn "SERVERS:${C}" -c "${MC_DIR}/${C}"
+	done
+	tmux killw -t 'SERVERS:bash'
 fi
-line 134
-for WINDOW in ${SERVERS[*]}
+for S in ${SERVERS[*]}
 do
-	if tmux findw "$WINDOW"
+	if tmux findw -t "SERVERS:${S}"
 	then
-		tmux send -t "$WINDOW" 'stop'
-		until ! tmux findw "$WINDOW"
-		do
-			sleep 3
-		done
+		:
 	else
-		tmux neww "$WINDOW"
+		tmux send -t "SERVERS:$S" "java -jar ${AIKAR} ${CUSTOMJAVAOPTIONS[${S}]} ../purpur.jar --nogui ${OPTS[${S}]}"
 	fi
-  tmux send -t "$WINDOW" "java -version && echo $WINDOW && read -n 4 STOP && exit
-	"
 done
 echo 'All done!'
