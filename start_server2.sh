@@ -110,20 +110,49 @@ then
 	popd
 fi
 pushd $MC_DIR
-pushd ./bin
-backup ${SERVERS[*]}
-update_purpur
+echo 'Updating Purpur ...'
+mv -f ./purpur-1.??.?-????.jar ./.old-jars/old-purpur.jar
+trap 'echo "Interrupt" && mv ./.old-jars/old-purpur.jar ./purpur.jar' 1 2 3 6
+curl -JLO# https://api.pl3x.net/v2/purpur/1.18.2/latest/download
+CURL=$?
+trap -
+case "$CURL" in
+0)
+	echo 'Done.'
+	;;
+*)
+	echo 'Failed, please manually download jar:'
+	cp $OLD_JAR ./old-purpur.jar
+	open https://purpurmc.org/downloads
+	exit 1
+	;;
+esac
 popd
 ## Starting of server
 ##########################
 ##### UNTESTED ALPHA #####
 ##########################
+set +x
+trap 'tmux detach && echo "Interrupt" && exit 1' 1 2 3 6
 TYPE='vertical'
 if $(tmux has -t SERVERS)
 then
-  tmux new -dt SERVERS -c ~/Minecraft
+	for Z in "${SERVERS[*]}"
+	do
+		if 
+  echo 'Session already exists! Attaching ..'
+	tmux attach -t SERVERS
+	exit $?
 else
-  tmux neww -c ~/Minecraft
+  tmux new-session -ds SERVERS
 fi
-tmux next-layout -t SERVERS
-tmux rename-window -t SERVERS
+tmux rename-window -t 0 SERVERS:"${SERVERS[0]}"
+for Z in ${SERVERS[*]}
+do
+	if [[ "$Z" = "${SERVERS[*]}" ]]; then
+		:
+	else
+		tmux neww -t SERVERS -n "$Z"
+	fi
+	tmux send -t SERVERS:"$Z" 'java --version && echo && read -n 4 STOP && exitC-m'
+done

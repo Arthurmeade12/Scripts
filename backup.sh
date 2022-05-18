@@ -4,12 +4,12 @@ UNIVERSE=$MC_DIR/universe
 BACKUP=$MC_DIR/backup
 cd $UNIVERSE
 ARGS=-dbrST
-for Z in $@
+for SERVER in $@
 do
-  cd $Z
-  if [[ -f $OLD_ZIP ]]
+  cd $SERVER
+  if [[ -f "$OLD_ZIP" ]]
   then
-    ARGS+=f
+    ARGS+=
   fi
-  zip $ARGS $(date "+%Y-%d-%m %H:%M")                                                     
+  zip $ARGS $(date "+%Y-%d-%m %H:%M")
 done
