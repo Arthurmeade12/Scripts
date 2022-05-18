@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 cd ~/Minecraft
-if getopts s
+if getopts s SERVER
 then
-  java --module-path $JAVAFX --add-modules javafx.controls -jar serversync-4.2.0.jar -sp 25598 -r ./quilt $@
+  java --module-path $JAVAFX --add-modules javafx.controls -jar serversync-4.2.0.jar -sp 25598 -r ./quilt
   exit $?
 else
   case $(hostname) in
