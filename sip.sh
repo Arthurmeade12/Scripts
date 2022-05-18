@@ -20,6 +20,6 @@ case "$VERSION" in
   ;;
 10.10|10.[98])
   # SIP does not exist on these versions, no changes necesarry.
-  echo 'SIP not needed'
+  echo 'SIP is non-existent'
   ;;
 esac
