@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-RUN_SUDO_PROGRAMS=false
+RUN_SUDO_PROGRAMS=true
 SSH=false
 ITERM=true
 if tmux has -t center &>/dev/null
@@ -25,7 +25,7 @@ tmux neww -n spt 'spt
 '
 case $SSH in
 true)
-  tmux neww -n ssh 'ssh Arthur@iMac
+  tmux neww -n ssh 'ssh Arthur@manjaro
   '
   ;;
 false)
