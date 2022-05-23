@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-RUN_SUDO_PROGRAMS=true
+RUN_SUDO_PROGRAMS=false
 SSH=false
 ITERM=true
 if tmux has -t center &>/dev/null
@@ -15,10 +15,10 @@ tmux new -ds 'center'
 tmux rename-window 'htop'
 if [[ "$RUN_SUDO_PROGRAMS" = 'true' ]]
 then
-  tmux send -t 'htop' 'sudo htop
+  tmux send -t 'btop' 'sudo btop
   '
 else
-  tmux send -t 'htop' 'htop
+  tmux send -t 'btop' 'btop
   '
 fi
 tmux neww -n spt 'spt
