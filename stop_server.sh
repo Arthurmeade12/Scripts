@@ -36,7 +36,7 @@ fi
 until [[ $# -eq 0 ]]
 do
 	case "$1" in
-		lobby|survival|ctl|quilt|velocity)
+		lobby|survival|ctl|quilt|velocity|serversync)
 			SERVERS+=("$1")
 			;;
 		*)
