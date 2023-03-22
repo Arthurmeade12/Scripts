@@ -1,32 +1,32 @@
 #!/usr/bin/env bash
 set -ebhmBo pipefail --
-PASSWORD=change # true|false|change
-TIMEOUT=60
-HASH_PATH=~/hash.txt
+PASSWORD='change' # true|false|change
+TIMEOUT=60 # No quotes for integer tag by delcare
+HASH_PATH="${HOME}/hash.txt"
 export PASSWORD{,_PATH} TIMEOUT HASH_PATH
 ask_sensitively(){
-	PROMPT=$1
-	VAR=$2
+	PROMPT="${1}"
+	VAR="${2}"
 	shift 2
 	# shellcheck disable=SC2229
-	read -srp "$PROMPT" "$@" "$VAR"
+	read -srp "${PROMPT}" "${@}" "${VAR}"
 	echo
 }
 ask(){
 
-	read -rp "$1" "$2"
+	read -rp "${1}" "${2}"
 }
-case $PASSWORD in
-false)
+case "${PASSWORD}" in
+'false')
 	echo 'Skipping verification.'
 	;;
-true)
-	if [[ -f $HASH_PATH ]]
+'true')
+	if [[ -f "${HASH_PATH}" ]]
 	then
 		while a=$((a + 1))
 		do
 			ask_sensitively 'Password:' PASS
-			if [[ "$HASH" = "$OLD_HASH" ]]
+			if [[ "${HASH}" = "${OLD_HASH}" ]]
 			then
 				echo 'Authenticated.'
 				unset a PASS
@@ -40,24 +40,24 @@ true)
 		exit 1
 	fi
 		;;
-change|create)
-	ask "Would you like to $PASSWORD a password ? (y/n) " 'CREATE_PASS' '-n 1'
-	case $CREATE_PASS in
+'change'|'create')
+	ask "Would you like to ${PASSWORD} a password ? (y/n) " 'CREATE_PASS' '-n 1'
+	case "${CREATE_PASS}" in
 	[yYx])
 		echo -e "\nGreat! To avoid being asked again, make sure PASSWORD is set to 'true' in your config file."
 		while a=$((a + 1))
 		do
 			ask_sensitively 'Enter your new password:' PASS1
 			ask_sensitively "Enter it again:" PASS2
-			if [[ "$PASS1" = "$PASS2" ]]
+			if [[ "${PASS1}" = "${PASS2}" ]]
 			then
 				unset PASS1 a
 				break
 			else
-				case $a in
+				case "${a}" in
 				5)
 					echo -e '5th password mismatch. \nAborting ...'
-					if [[ $PASSWORD = 'change' ]]
+					if [[ "${PASSWORD}" = 'change' ]]
 					then
 						echo 'Restoring your old password ...'
 					fi
@@ -69,9 +69,9 @@ change|create)
 				esac
 			fi
 		done
-		HASH=$(echo "$PASS2" | sha512sum)
+		HASH="$(echo "${PASS2}" | sha512sum)"
 		unset PASS2
-		echo "$HASH" > "$HASH_PATH"
+		echo "${HASH}" > "${HASH_PATH}"
 		echo 'Password set.'
 		;;
 	[nN])
