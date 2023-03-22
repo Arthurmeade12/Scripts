@@ -1,44 +1,22 @@
 #!/usr/bin/env bash
 set -euo pipefail
-RUN_SUDO_PROGRAMS=false
-SSH=false
-ITERM=true
-if tmux has -t center &>/dev/null
+RUN_SUDO_PROGRAMS='false'
+SSH='false'
+SESSION='CENTER'
+if tmux has -t CENTER 2>/dev/null
 then
   echo "ERROR: Session 'center' already exists!"
   exit 1
-else
-  :
 fi
 
-tmux new -ds 'center'
-tmux rename-window 'htop'
+tmux new -ds "${SESSION}"
+tmux rename-window 'Work'
 if [[ "$RUN_SUDO_PROGRAMS" = 'true' ]]
 then
-  tmux send -t 'btop' 'sudo btop
-  '
+  tmux neww -s "${SESSION}" -n 'Btop' 'sudo btop'
 else
-  tmux send -t 'btop' 'btop
-  '
+  tmux neww -s "${SESSION}" -n 'Btop' 'btop'
 fi
-tmux neww -n spt 'spt
-'
-case $SSH in
-true)
-  tmux neww -n ssh 'ssh Arthur@manjaro
-  '
-  ;;
-false)
-  :
-  ;;
-esac
-tmux neww -n 'work'
-case "$ITERM" in
-true)
-  tmux -CC attach -t center
-  ;;
-false)
-  tmux attach -t center
-  ;;
-esac
-exit 0
+[[ "${SSH}" = 'true' ]] && tmux neww -n iMac 'ssh arthurmeade12@meades-linux-imac'
+tmux attach -t center
+exit
