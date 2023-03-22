@@ -1,4 +1,8 @@
-#!/usr/local/Cellar/bash/5.1.8/bin/bash
+#!/usr/bin/env bash
+#
+# 3/22/23
+# I am too tired to clean up this old script. Leaving as is although its crappy.
+#
 . ~/bashrc/is_env_sane.sh
 prompt(){
 	echo -ne "${BLUE}${BOLD}==>${RESET} ${WHITE}$@${RESET}"
