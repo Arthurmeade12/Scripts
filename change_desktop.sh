@@ -23,7 +23,7 @@
 #############################################################################
 set -euo pipefail
 ### Make sure we're running bash, ksh, or zsh before we continue.
-case $BASH_VERSION in
+case "${BASH_VERSION}" in
 5.?.?*|4.?.?* )
 	:
 	;;
@@ -60,15 +60,15 @@ SUDO=false
 if [[ $EUID = 0 ]]; then
 	SUDO=true
 fi
-BLUE=$(tput setaf 4)
-BOLD=$(tput bold)
-RESET=$(tput sgr0)
-RED=$(tput setaf 1)
-YELLOW=$(tput setaf 3)
-UNDERLINED=$(tput smul)
+BLUE="$(tput setaf 4)"
+BOLD="$(tput bold)"
+RESET="$(tput sgr0)"
+RED="$(tput setaf 1)"
+YELLOW="$(tput setaf 3)"
+UNDERLINED="$(tput smul)"
 # Readonly vars
-for X in {BLUE,BOLD,RESET,RED,SUDO,UNDERLINED}; do
-	readonly -- "$X"
+for COLOR in {BLUE,BOLD,RESET,RED,SUDO,UNDERLINED}; do
+	readonly -- "${COLOR}"
 done
 
 ### Functions
@@ -79,9 +79,8 @@ out(){
 	done
 }
 abort(){
-	[ $# -ne 1 ] && return 2
-	echo -en "${RED}$*"
-	echo
+	[[ "${#}" -ne 1 ]] && return 2
+	echo -en "${RED}${*}\n"
 	exit 1
 }
 qq(){
@@ -116,20 +115,18 @@ esac
 #	abort 'This computer is not being managed by the Trinity Episcopal School. '
 #fi
 ### Introduction
-out "Welcome to Arthur's Desktop changer!" "This script lets you change your desktop image to whatever you like, with a some exceptions."
-out "$YELLOW${UNDERLINED}You cannot have different images for each desktop, they must all be the same."
-out "You can use this script multiple times, and to change an image you changed before. "
+out "Welcome to Arthur's Desktop changer!" "This script lets you change your desktop image to whatever you like, with a some exceptions." "${YELLOW}${UNDERLINED}You cannot have different images for each desktop, they must all be the same." "You can use this script multiple times, and to change an image you changed before. "
 qq "Would you like to continue? (y/n)"
 a=0
 while a=$((a + 1)); do
-	echo "\$a = $a"
+	echo "\$a = ${a}"
 	read -rn 2 -t 30 CONSENT
-	if [[ $? -eq 142 ]]
+	if [[ "${?}" -eq 142 ]]
 	then
-		echo
+		echo{
 		abort "30 seconds of inactivity. \nAborting ..."
 	fi
-	case $CONSENT in
+	case "${CONSENT}" in
 	[Yy])
 		out "Great!
 		..."
@@ -139,7 +136,7 @@ while a=$((a + 1)); do
 		out "Just fine! Exiting ..."
 		exit 0
 		;;
-	*)
+	"*")
 		echo
 		out "${RED}Invalid answer."
 		if [[ $a -eq 5 ]]; then
@@ -151,15 +148,17 @@ while a=$((a + 1)); do
 done
 exit 0
 cd /Library/TESNOLA
-COMMAND='cp $INPUT /Library'
+COMMAND="cp ${INPUT} /Library"
 (
 	COMMAND='mv ./TESNOLA.png /tmp/old_TESNOLA.png'
-	case "$SUDO" in
+	case "${SUDO}" in
 	true)
-		"$COMMAND"
+		"${COMMAND}"
 		;;
 	false)
 		out "Asking for your password to change image:"
-		sudo $COMMAND
+		sudo "${COMMAND}"
+		;;
+  esac
 )
-ln -s
+# Will never be finished. No longer attending Trinity school.
