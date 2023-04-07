@@ -142,6 +142,7 @@ alias grep=rga
 alias dd=dd_rescue
 alias df=duf
 alias rnano=nvim
+export PAGER=most
 export EDITOR=kate
 export PATH="${PATH}:${HOME}/.local/bin"
 test_internet(){
@@ -179,3 +180,4 @@ tmux-window-name() {
 }
 
 add-zsh-hook chpwd tmux-window-name
+
