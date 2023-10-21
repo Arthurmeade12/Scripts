@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+RESET="$(tput sgr0)"
+BOLD="$(tput bold)"
+out(){
+  if [[ -t 1 ]]
+  then
+    echo "$(tput setaf 4)${BOLD}==>${RESET} $(tput setaf 15)${*} ${RESET}"
+  else
+    echo "$@"
+  fi
+}
+if ! which alda &>/dev/null
+then
+    out 'Alda is not installed. '
+    echo -n "$(tput setaf 6)${BOLD}==>${RESET} $(tput setaf 15)Would you like to install Alda ? (y/n) ${RESET}"
+    read -t 60 -n 1 INSTALL
+    case "${INSTALL}" in
+    [Yy]) [[ "$(uname)" = 'Darwin' ]] && brew install alda ;;
+    [Nn]) out "Just fine. Exiting ..." && exit 0 ;;
+    *) out "That wasn't 'y' or 'n'. Aborting ..." && exit 1 ;;
+    esac
+fi
+while true
+do
+    out 'Drag file onto this window to play, enter Alda command (type commands to get a list), or hit enter to exit.'
+    out 'Select this window and hit enter to either play your file or execute a command.'
+    read -t 60 ANSWER
+    case "${ANSWER}" in
+    ''|'exit'|'quits')
+        out 'Goodbye!'
+        exit 0
+        ;;
+    'commands')
+        out 'doctor,export,help,instruments,parse,play,ps,repl,shutdown,stop,telemetry,update,version'
+        ;;
+    'doctor'|'export'|'help'|'instruments'|'parse'|'play'|'ps'|'repl'|'shutdown'|'stop'|'telemetry'|'update'|'version')
+        alda "${ANSWER}"
+        ;;
+    *)
+        if [[ -f "${ANSWER}" ]]
+        then
+            alda play -f "${ANSWER}" || out "That's not a valid 'alda' file."
+
+        else
+            out "Hmm. That was not a recognized answer."
+        fi
+        ;;
+    esac
+    echo
+done
+
+
+
+
+
