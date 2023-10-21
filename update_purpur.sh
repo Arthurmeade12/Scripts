@@ -129,7 +129,7 @@ DATA
         out "${1} is up to date!"
     else
         trash "${FILE}"
-       	if curl -JLO# "$(mrdown "${APIURL}" | jq -r "${JQCOMMAND} | .url")"
+       	if curl -JLO# "$(mrdown "${APIURL}" | jq -r "${JQCOMMAND} | .url")" &
         then
             out "Updated ${1}"
         else
