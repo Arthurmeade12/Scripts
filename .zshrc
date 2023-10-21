@@ -113,6 +113,9 @@ source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/fzf/key-bindings.zsh
 # Type ** and hit tab (eg. with the cd command; works with directories, files, process IDs, hostnames, environment variables)
 source /usr/share/fzf/completion.zsh
+# Colors for linux console.
+source ~/.dracula-tty.sh
+
 
 # Sift through history for previous commands matching everything up to current cursor position.
 # Moves the cursor to the end of line after each match.
@@ -131,8 +134,8 @@ eval "$(zoxide init zsh)"
 alias open='xdg-open'
 alias rm=trash
 alias cat=bat
-alias cd=z
-alias ls='exa -GHal@ --color-scale --no-user --icons --group-directories-first --git-ignore --git --time-style iso'
+alias 'cd'=z
+alias ls='exa -GHal@ --color-scale --no-user --icons --group-directories-first --git --time-style iso'
 alias du=dust
 alias find=fd
 alias open=xdg-open
@@ -145,6 +148,8 @@ alias rnano=nvim
 export PAGER=most
 export EDITOR=kate
 export PATH="${PATH}:${HOME}/.local/bin"
+export FZF_DEFAULT_OPTS='--color=fg:#f8f8f2,bg:#282a36,hl:#bd93f9 --color=fg+:#f8f8f2,bg+:#44475a,hl+:#bd93f9 --color=info:#ffb86c,prompt:#50fa7b,pointer:#ff79c6 --color=marker:#ff79c6,spinner:#ffb86c,header:#6272a4'
+
 test_internet(){
 while true
 do
@@ -175,9 +180,23 @@ developer_message(){
 unrf(){
     rfkill unblock all
 }
-tmux-window-name() {
-	($TMUX_PLUGIN_MANAGER_PATH/tmux-window-name/scripts/rename_session_windows.py &)
+mouse(){
+    case "$(tmux show-options)" in
+    'mouse off')
+        tmux set-option mouse on
+        ;;
+    'mouse on')
+        tmux set-option mouse off
+        ;;
+    esac
 }
+enviro(){
+    mcstatus na-42.enviromc.host:25537 json | jq
+    MCRCON_HOST='na-42.enviromc.host' MCRCON_PORT='25511' MCRCON_PASS='64oXqvi2jT6T86' mcrcon
+}
+#tmux-window-name() {
+#	($TMUX_PLUGIN_MANAGER_PATH/tmux-window-name/scripts/rename_session_windows.py &)
+#}
 
-add-zsh-hook chpwd tmux-window-name
+#add-zsh-hook chpwd tmux-window-name
 

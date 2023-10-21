@@ -92,7 +92,7 @@ for X in {out,abort,qq}; do
 done
 ### OS checks
 # MacOS (really Darwin) check
-case $(sysctl -n kern.ostype) in
+case $(sysctl -n kern.ostype || sysctl -n kernel.ostype) in
 Darwin ): ;;
 * ) abort "ERROR: You are not running MacOS."
 	;;
