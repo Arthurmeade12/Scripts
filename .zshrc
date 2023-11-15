@@ -113,9 +113,6 @@ source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/fzf/key-bindings.zsh
 # Type ** and hit tab (eg. with the cd command; works with directories, files, process IDs, hostnames, environment variables)
 source /usr/share/fzf/completion.zsh
-# Colors for linux console.
-source ~/.dracula-tty.sh
-
 
 # Sift through history for previous commands matching everything up to current cursor position.
 # Moves the cursor to the end of line after each match.
@@ -135,7 +132,7 @@ alias open='xdg-open'
 alias rm=trash
 alias cat=bat
 alias 'cd'=z
-alias ls='exa -GHal@ --color-scale --no-user --icons --group-directories-first --git --time-style iso'
+alias ls='exa -GFHAlohM@t modified --git-repos --total-size --sort extension --color-scale all --color=auto --color-scale-mode gradient --no-user --icons auto --hyperlink --no-quotes --smart-group --group-directories-first --git --time-style iso'
 alias du=dust
 alias find=fd
 alias open=xdg-open

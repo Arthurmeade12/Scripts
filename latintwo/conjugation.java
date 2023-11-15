@@ -1,4 +1,4 @@
-package latintwo;
+package me.arthurmeade12.latintwo;
 import java.util.Scanner;
 public class conjugation {
     public int conjugation = 0;

@@ -1,0 +1,32 @@
+//////////////////////////////////////////////////
+///  0 - not latin                             ///
+///  1 - first                                 ///
+///  2 - second                                ///
+///  3 - third                                 ///
+///  4 - fourth                                ///
+///  5 - fifth                                 ///
+///  6 - special declension (alius is ille etc)///
+///  7 - interrogative or relative             ///
+///  8 - hic haec hoc                          ///
+//////////////////////////////////////////////////
+// Array Key:
+// case, number
+// 0 singular, 1 plural
+// 0 - nominative
+// 1 - genitive
+// 2 - dative
+// 3 - accusative
+// 4 - ablative
+// 5 - vocative
+// 6 - locative
+/////////////////////////////////////
+/// nomsing = Nominative Singular ///
+/// gensing = Genitive Singular   ///
+/// datsing = Dative Singular     ///
+/// accsing = Accusative Singular ///
+/// ablsing = Ablative Singular   ///
+/// vocsing = Vocative Singular   ///
+/// locsing = Locative Singular   ///
+/// Replace 'sing' with 'plur' to ///
+/// get the plural forms          ///
+/////////////////////////////////////
