@@ -1,8 +1,7 @@
 package me.arthurmeade12.decliner;
 import java.util.Scanner;
 public class classify {
-    protected String genitive, nominative;
-    protected byte getdecl() {
+    public static byte getdecl(String nominative, String genitive) {
         String ending = genitive.substring(genitive.length()-2);
         byte error = 0;
         switch (ending) {
@@ -53,16 +52,34 @@ public class classify {
                 }
             } else {
                 if (error > 0) {
-                    System.out.println(nominative + " does not fall into declension #" + error + ". ");
+                    msg.warn(nominative + " does not fall into declension #" + error + ". ");
                 } else {
-                    System.out.println(nominative + " does not fall into any declension. ");
+                    msg.warn(nominative + " does not fall into any declension. ");
                 }
                 return 0;
                 // 0 for errors (not falling into a declension)
             }
         }
     }
-    protected char getgender(byte decl) {
+    public static String getbase(String genitive, byte decl) {
+        switch (decl) {
+        case 1:
+        case 3:
+        case 4:
+        case 5:
+            return genitive.substring(0, genitive.length() - 2);
+        case 2:
+            return genitive.substring(0, genitive.length() - 1);
+        case 6:
+            return genitive.substring(0, genitive.length() - 3);
+        case 7:
+        case 8:
+            return "";
+        default:
+            return "0";
+        }
+    }
+    public static char getgender(String nominative, String genitive, byte decl) {
         switch (decl) {
         case 1:
             switch (nominative) {
@@ -101,8 +118,8 @@ public class classify {
             } else if ((nominative.endsWith("tas") && genitive.endsWith("tatis")) || (nominative.endsWith("tus") && genitive.endsWith("tudis"))) {
                 return 'f';
             } else {
-                System.out.println("What is the gender of " + nominative + " ?");
-                System.out.print("m for masculine, f for feminine, n for neuter : ");
+                msg.out("What is the gender of " + nominative + " ?");
+                msg.out("m for masculine, f for feminine, n for neuter : ");
                 Scanner genthird = new Scanner(System.in);
                 String tempstr = genthird.next();
                 // TODO: write loop to make sure answer is m, f, or n
@@ -131,11 +148,9 @@ public class classify {
                 }
             }
         case 5:
-            switch (nominative) {
-            case "dies":
-            case "meridies":
+            if (nominative.endsWith("dies")) {
                 return 'm';
-            default:
+            } else {
                 return 'f';
             }
         case 8:
