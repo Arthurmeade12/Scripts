@@ -132,7 +132,7 @@ alias open='xdg-open'
 alias rm=trash
 alias cat=bat
 alias 'cd'=z
-alias ls='exa -GFHAlohM@t modified --git-repos --total-size --sort extension --color-scale all --color=auto --color-scale-mode gradient --no-user --icons auto --hyperlink --no-quotes --smart-group --group-directories-first --git --time-style iso'
+alias ls='exa -FHAloM@t modified --total-size --sort extension --color-scale all --color=auto --color-scale-mode gradient --no-user --icons auto --hyperlink --no-quotes --smart-group --group-directories-first --git --time-style iso'
 alias du=dust
 alias find=fd
 alias open=xdg-open
