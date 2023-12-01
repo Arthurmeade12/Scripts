@@ -1,6 +1,6 @@
 package me.arthurmeade12.decliner;
 import java.util.Scanner;
-public class classify {
+public class latinutils {
     public static byte getdecl(String nominative, String genitive) {
         String ending = genitive.substring(genitive.length()-2);
         byte error = 0;

@@ -1,3 +1,4 @@
+package me.arthurmeade12.decliner;
 public class msg {
     public static void out(String msg) {
         System.out.printf("\033[1;34m==>\033[0m \033[1;37m%s\033[0m%n", msg);

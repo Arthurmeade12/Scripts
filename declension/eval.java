@@ -1,45 +1,32 @@
 package me.arthurmeade12.decliner;
 import java.lang.Boolean;
 public class eval {
+    protected String[][] declension = new String[7][2];
+    protected String[][] endings = new String [7][3];
+    public String nominative, genitive;
+    eval(String nom, String gen) {
+        this.nominative = nom;
+        this.genitive = gen;
+    }
+    protected byte decl = latinutils.getdecl(nominative, genitive);
+    protected char gender = latinutils.getgender(nominative, genitive, decl);
+    protected String base = latinutils.getbase(genitive, decl);
     public boolean print_vocatives_and_locatives = false;
-    protected String base;
-    protected String[][] declension = new String[7][3];
-    protected byte decl;
-    eval(String nominative, String genitive) { // constructor
-        decl = classify.getdecl(nominative, genitive);
-        declension[0][0] = nominative;
-        base = classify.getbase(genitive, decl);
+    protected void makedecl(){
+        // will be overriden by subclasses
+        msg.die("Do not call the makedecl from outside a subclass.", 1);
     }
-    protected String[][] makedecl(){
-        if (declension [1][0] == null) { // just picked gen. sing randomly, doesn't matter which one (except it can't be nom. sing)
-            if (declension[0][1] == null) {
-                declension[0][1] = base + endings[0][1]; // nom. plur
-            }
-            for (byte k = 0; k <= 1; k++){
-                for (byte i = 1; i <= 6; i++) {
-                    if (declension[i][k] == null) {
-                        declension[i][k] = base + endings[i][k];
-                    }
-                }
-            }
-            for (byte j = 0; j <= 6; j++) {
-                declension[j][2] = " "; // should be overruled by subclasses
-            }
-        }
-        return this.declension;
-    }
-    void complete(){
-        if (boolean.valueOf(declension[1][0]) = null) {
-            this.makedecl();
-        } // otherwise no need to re-exec code, the array is already set
-        System.out.println(declension[0][0] + declension[0][2] + declension[0][1]);
-        System.out.println(declension[1][0] + declension[1][2] + declension[1][1]);
-        System.out.println(declension[2][0] + declension[2][2] + declension[2][1]);
-        System.out.println(declension[3][0] + declension[3][2] + declension[3][1]);
-        System.out.println(declension[4][0] + declension[4][2] + declension[4][1]);
+    public void complete(){
+        // will not be overriden, but needs to be called from subclass. Errors?
+        String[][] table = this.declension; // this function checks if  table[][] is already set
+        System.out.println(table[0][0] +  table[0][2] +  table[0][1]);
+        System.out.println(table[1][0] +  table[1][2] +  table[1][1]);
+        System.out.println(table[2][0] +  table[2][2] +  table[2][1]);
+        System.out.println(table[3][0] +  table[3][2] +  table[3][1]);
+        System.out.println(table[4][0] +  table[4][2] +  table[4][1]);
         if (print_vocatives_and_locatives) {
-            System.out.println(declension[5][0] + declension[5][2] + declension[5][1]);
-            System.out.println(declension[6][0] + declension[6][2] + declension[6][1]);
+            System.out.println(table[5][0] +  table[5][2] +  table[5][1]);
+            System.out.println(table[6][0] +  table[6][2] +  table[6][1]);
         }
     }
 }

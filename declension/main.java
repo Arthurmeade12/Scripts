@@ -22,6 +22,13 @@ public class main {
             gen = input.next();
             input.close();
         }
-        eval exec = new eval(nom, gen);
+        switch (latinutils.getdecl(nom, gen)) {
+        case 1:
+            first exec = new first(nom, gen);
+            break;
+        default:
+            msg.warn("Not done yet");
+            break;
+        }
     }
 }
