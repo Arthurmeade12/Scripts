@@ -2,7 +2,6 @@ package me.arthurmeade12.decliner;
 import java.util.Scanner;
 public class latinutils {
     public static byte getdecl(String nominative, String genitive) {
-        msg.out("Params received in getdecl :" + nominative + " " + genitive);
         String ending = genitive.substring(genitive.length()-2);
         byte error = 0;
         switch (ending) {
@@ -44,7 +43,7 @@ public class latinutils {
         default:
             if (genitive.endsWith("i")) {
                 // TODO: vir does not match these criteria
-                if (nominative.endsWith("us") || nominative.endsWith("um") || nominative.endsWith("er") || (nominative == "vir")) {
+                if (nominative.endsWith("us") || nominative.endsWith("um") || nominative.endsWith("er") || nominative.endsWith("ir")) {
                     return 2;
                     // will figure out base w/ or w/o e in second class
                 } else {

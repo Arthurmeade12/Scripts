@@ -22,11 +22,27 @@ public class main {
             gen = input.next();
             input.close();
         }
+        System.out.println("");
         switch (latinutils.getdecl(nom, gen)) {
         case 1:
-            msg.out("Entering the first class with params " + nom + " " + gen);
-            first exec = new first(nom, gen);
-            exec.complete();
+            first execfirst = new first(nom, gen);
+            msg.out("Gender : " + execfirst.gender);
+            execfirst.complete();
+            break;
+        case 2:
+            second execsecond = new second(nom, gen);
+            msg.out("Gender : " + execsecond.gender);
+            execsecond.complete();
+            break;
+        case 4:
+            fourth execfourth = new fourth(nom, gen);
+            msg.out("Gender : " + execfourth.gender);
+            execfourth.complete();
+            break;
+        case 5:
+            fifth execfifth = new fifth(nom, gen);
+            msg.out("Gender : " + execfifth.gender);
+            execfifth.complete();
             break;
         default:
             msg.warn("Not done yet");

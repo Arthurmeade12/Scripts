@@ -3,30 +3,36 @@ import java.lang.Boolean;
 public class eval {
     public boolean print_vocatives_and_locatives = false;
     protected String[][] declension = new String[7][3];
-    public String nominative, genitive;
     protected String base;
-    protected char gender;
+    char gender;
     protected byte decl;
     eval(String nom, String gen) {
-        nominative = nom;
-        genitive = gen;
-        decl = latinutils.getdecl(nominative, genitive);
-        base = latinutils.getbase(genitive, decl);
-        for (byte i = 0; i < declension.length; i++) {
-            for (byte j = 0; j < declension[i].length; j++) {
-                declension[i][j] = "";
-                // fixes errors with checking for length of null
+        declension[0][0] = nom;
+        decl = latinutils.getdecl(nom, gen);
+        base = latinutils.getbase(gen, decl);
+        gender = latinutils.getgender(nom, gen, decl);
+    }
+    protected void exceptions(){
+        msg.die("Call this from the subclass.", 1);
+    }
+    protected void makedecl(String[][] endings){
+        for (byte i = 1; i <= 6; i++) { // skip nominative bc its weird in 3rd
+            declension[i][2] = endings[i][2];
+            for (byte k = 0; k <= 1; k++){
+                declension[i][k] = base + endings[i][k];
             }
         }
-    }
-    private static void callsubclass(){
-        msg.die("You can only call this method from a subclass.");
-    }
-    protected void makedecl(){
-        eval.callsubclass();
+        declension[0][2] = endings[0][2];
+        // nom.sing already set
+        declension[0][1] = base + endings[0][1];
+        if (gender == 'n'){
+            declension[3][0] = declension[0][0]; // nom = acc
+            declension[0][1] = base + "a";
+            declension[3][1] = base + "a";
+        }
+        this.exceptions();
     }
     public void complete(){
-        this.makedecl();
         System.out.println(declension[0][0] +  declension[0][2] +  declension[0][1]);
         System.out.println(declension[1][0] +  declension[1][2] +  declension[1][1]);
         System.out.println(declension[2][0] +  declension[2][2] +  declension[2][1]);
