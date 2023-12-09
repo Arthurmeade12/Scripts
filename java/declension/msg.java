@@ -10,4 +10,7 @@ public class msg {
         System.out.printf("\033[1;31m==>\033[0m \033[1;37mERROR:\033[0m \033[1;37m%s\033[0m%n\033[0;31mAborting ...\033[0m%n", msg);
         System.exit(code);
     }
+    public static void die(String msg) {
+        System.out.printf("\033[1;31m==>\033[0m \033[1;37mERROR:\033[0m \033[1;37m%s\033[0m%n", msg);
+    }
 }

@@ -1,32 +1,40 @@
 package me.arthurmeade12.decliner;
 import java.lang.Boolean;
 public class eval {
-    protected String[][] declension = new String[7][2];
-    protected String[][] endings = new String [7][3];
-    public String nominative, genitive;
-    eval(String nom, String gen) {
-        this.nominative = nom;
-        this.genitive = gen;
-    }
-    protected byte decl = latinutils.getdecl(nominative, genitive);
-    protected char gender = latinutils.getgender(nominative, genitive, decl);
-    protected String base = latinutils.getbase(genitive, decl);
     public boolean print_vocatives_and_locatives = false;
+    protected String[][] declension = new String[7][3];
+    public String nominative, genitive;
+    protected String base;
+    protected char gender;
+    protected byte decl;
+    eval(String nom, String gen) {
+        nominative = nom;
+        genitive = gen;
+        decl = latinutils.getdecl(nominative, genitive);
+        base = latinutils.getbase(genitive, decl);
+        for (byte i = 0; i < declension.length; i++) {
+            for (byte j = 0; j < declension[i].length; j++) {
+                declension[i][j] = "";
+                // fixes errors with checking for length of null
+            }
+        }
+    }
+    private static void callsubclass(){
+        msg.die("You can only call this method from a subclass.");
+    }
     protected void makedecl(){
-        // will be overriden by subclasses
-        msg.die("Do not call the makedecl from outside a subclass.", 1);
+        eval.callsubclass();
     }
     public void complete(){
-        // will not be overriden, but needs to be called from subclass. Errors?
-        String[][] table = this.declension; // this function checks if  table[][] is already set
-        System.out.println(table[0][0] +  table[0][2] +  table[0][1]);
-        System.out.println(table[1][0] +  table[1][2] +  table[1][1]);
-        System.out.println(table[2][0] +  table[2][2] +  table[2][1]);
-        System.out.println(table[3][0] +  table[3][2] +  table[3][1]);
-        System.out.println(table[4][0] +  table[4][2] +  table[4][1]);
+        this.makedecl();
+        System.out.println(declension[0][0] +  declension[0][2] +  declension[0][1]);
+        System.out.println(declension[1][0] +  declension[1][2] +  declension[1][1]);
+        System.out.println(declension[2][0] +  declension[2][2] +  declension[2][1]);
+        System.out.println(declension[3][0] +  declension[3][2] +  declension[3][1]);
+        System.out.println(declension[4][0] +  declension[4][2] +  declension[4][1]);
         if (print_vocatives_and_locatives) {
-            System.out.println(table[5][0] +  table[5][2] +  table[5][1]);
-            System.out.println(table[6][0] +  table[6][2] +  table[6][1]);
+            System.out.println(declension[5][0] +  declension[5][2] +  declension[5][1]);
+            System.out.println(declension[6][0] +  declension[6][2] +  declension[6][1]);
         }
     }
 }

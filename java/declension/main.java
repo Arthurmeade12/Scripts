@@ -16,15 +16,17 @@ public class main {
             }
         } else {
             Scanner input = new Scanner(System.in);
-            msg.out("Nominative ? : ");
+            msg.out("Nominative ?");
             nom = input.next();
-            msg.out("Full genitive ? : ");
+            msg.out("Full genitive ?");
             gen = input.next();
             input.close();
         }
         switch (latinutils.getdecl(nom, gen)) {
         case 1:
+            msg.out("Entering the first class with params " + nom + " " + gen);
             first exec = new first(nom, gen);
+            exec.complete();
             break;
         default:
             msg.warn("Not done yet");

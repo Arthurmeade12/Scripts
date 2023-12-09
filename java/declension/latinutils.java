@@ -2,6 +2,7 @@ package me.arthurmeade12.decliner;
 import java.util.Scanner;
 public class latinutils {
     public static byte getdecl(String nominative, String genitive) {
+        msg.out("Params received in getdecl :" + nominative + " " + genitive);
         String ending = genitive.substring(genitive.length()-2);
         byte error = 0;
         switch (ending) {
