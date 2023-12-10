@@ -25,3 +25,9 @@
 // f = feminine
 // n = neuter
 // 0 = no gender could be determined
+/////////
+// Exit Codes:
+// 0 - no errors
+// 1 - exceptions() can only be called from a subclass
+// 2 - 3 invalid answers from user while trying to determine gender
+// anything else - consult JVM manual

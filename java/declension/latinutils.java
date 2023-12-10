@@ -1,8 +1,11 @@
 package me.arthurmeade12.decliner;
 import java.util.Scanner;
 public class latinutils {
+    public static boolean case_sensitive = true;
     public static byte getdecl(String nominative, String genitive) {
-        String ending = genitive.substring(genitive.length()-2);
+        String temp = genitive.substring(genitive.length()-2);
+        String ending = temp.toLowerCase();
+        temp = null;
         byte error = 0;
         switch (ending) {
         case "ae":
@@ -13,9 +16,6 @@ public class latinutils {
             }
         case "is":
             return 3;
-            // No tests on the nominative, it's so unpredicatible
-            // will put i-stem tests in the third class
-            // will also deal with mare in the third class
         case "us":
             switch (genitive) {
             case "ejus":
@@ -121,9 +121,26 @@ public class latinutils {
                 msg.out("What is the gender of " + nominative + " ?");
                 msg.out("m for masculine, f for feminine, n for neuter : ");
                 Scanner genthird = new Scanner(System.in);
-                String tempstr = genthird.next();
-                // TODO: write loop to make sure answer is m, f, or n
-                char ans = tempstr.charAt(0);
+                char ans = ' ';
+                for (byte i = 1; i > 0; i++) {
+                    ans = genthird.next().charAt(0);
+                    switch (ans) {
+                    case 'm':
+                    case 'f':
+                    case 'n':
+                        return ans;
+                    case 'M':
+                    case 'F':
+                    case 'N':
+                        return Character.toLowerCase(ans);
+                    default:
+                        if (i == 3) {
+                            msg.die("Three incorrect attempts. ", 2);
+                        } else {
+                            msg.warn("Invalid answer. Choose m, f, or n");
+                        }
+                    }
+                }
                 return ans;
             }
         case 4:
