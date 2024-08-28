@@ -132,13 +132,12 @@ alias open='xdg-open'
 alias rm=trash
 alias cat=bat
 alias 'cd'=z
-alias ls='exa -FHAloM@t modified --total-size --sort extension --color-scale all --color=auto --color-scale-mode gradient --no-user --icons auto --hyperlink --no-quotes --smart-group --group-directories-first --git --time-style iso'
+alias ls=eza
+#alias ls='exa -FHAloM@t modified --total-size --sort extension --color-scale all --color=auto --color-scale-mode gradient --no-user --icons auto --hyperlink --no-quotes --smart-group --group-directories-first --git --time-style iso'
 alias du=dust
-alias find=fd
 alias open=xdg-open
 alias diff=delta
 alias grep=rga
-alias dd=dd_rescue
 alias df=duf
 alias vim=nvim
 export PAGER=most
@@ -167,14 +166,11 @@ bw_unlock(){
     local PASSWORD="$(kwallet-query -r bitwarden)"
     if [[ "$(bw login --check --raw)" = 'You are not logged in.' ]]
     then
-        bw login arthurmeade12@gmail.com 
+        bw login arthurmeade12@gmail.com
     fi
 }
 developer_message(){
     curl -s http://www.developerexcuses.com/ | pup -c body center a | head -n 2 | tail -n 1 | tr '&#39;' \'
-}
-unrf(){
-    rfkill unblock all
 }
 mouse(){
     case "$(tmux show-options)" in
@@ -187,12 +183,42 @@ mouse(){
     esac
 }
 enviro(){
-    mcstatus na-42.enviromc.host:25537 json | jq
-    MCRCON_HOST='na-42.enviromc.host' MCRCON_PORT='25511' MCRCON_PASS='64oXqvi2jT6T86' mcrcon
+    mcstatus robojoe.mooo.com json | jq
+    MCRCON_HOST='robojoe.mooo.com' MCRCON_PORT='25787' MCRCON_PASS='4RWcPSr5Pddmxi' mcrcon
 }
-#tmux-window-name() {
-#	($TMUX_PLUGIN_MANAGER_PATH/tmux-window-name/scripts/rename_session_windows.py &)
-#}
 
-#add-zsh-hook chpwd tmux-window-name
+# Tmux aliases
+s(){
+    tmux neww -dn Spt ncspot
+}
+sn(){
+    tmux neww -n Spt ncspot
+}
+b(){
+	tmux neww -dn Btop btop
+}
+bn(){
+	tmux neww -n Btop btop
+}
+u(){
+    echo -n 'Press any key within 10 seconds to stop upgrade... or press enter to continue ...'
+    read -k -t 10 KEY || return
+    if [[ "${KEY}" != "" ]]
+    then
+        return
+    fi
+    sudo pacman -Syu
+    paru
+    printf "\a"
+    echo 'Done!'
+    sleep 3
+}
+a(){
+	tmux attach || tmux
+	tmux neww -d
+	b
+	s
+	tmux killw -t 2
+	tmux splitw -t 1 -h 'zsh -c u'
+}
 
